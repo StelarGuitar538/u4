@@ -7,6 +7,9 @@ class Nodo:
     def getValor(self):
         return self.__valor
     
+    def setValor(self, valor):
+        self.__valor = valor
+    
     def getIzquierda(self):
         return self.__izquierda
     
