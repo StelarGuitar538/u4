@@ -53,8 +53,9 @@ class Arbol:
                 return nodo.getIzquierda()
             #caso 3: se encuentra el sucesor inorden(el nodo mas pequeno en el subarbol derecho) o el predecesor inorden (el nodo mas grande en ek subarbol izquierdo) para reemplazar el nodo eliminado
             sucesor = self.encontrarMin(nodo.getDerecha()) #encuentra el sucesor inorden
-            nodo.getValor() = sucesor.getValor() #reemplaza el nodo eliminado por el sucesor inorden
-            nodo.getDerecha() = self.eliminar() #elimina el sucesor inorden
+            nodo.setValor(sucesor.getValor()) #reemplaza el nodo eliminado por el sucesor inorden
+            nodo.setDerecha(self.eliminar(nodo.getDerecha(), sucesor.getValor())) #elimina el sucesor inorden
+
         return nodo
     
     def encontrarMin(self, nodo):
@@ -139,3 +140,29 @@ class Arbol:
             self.postorden(nodo.getIzquierda())
             self.postorden(nodo.getDerecha())
             print(nodo.getValor())
+            
+    def contarNodos(self, nodo):
+        if nodo is None:
+            return 0
+        else:
+            # Cuenta el nodo actual (1) y llama recursivamente para contar los nodos izquierdo y derecho
+            return 1 + self.contarNodos(nodo.getIzquierda()) + self.contarNodos(nodo.getDerecha())
+        
+    def mostrarSucesores(self, valor):
+        # Primero buscamos el nodo con el valor ingresado
+        nodo = self.buscar(self.getRaiz(), valor)
+            
+        if nodo is None:
+            print("El nodo con valor", valor, "no se encuentra en el árbol.")
+            return
+            
+        # Si encontramos el nodo, mostramos sus sucesores inorden
+        print("Sucesores del nodo con valor", valor, ":")
+        self.sucesoresInorden(nodo.getDerecha())
+
+    def sucesoresInorden(self, nodo):
+        if nodo is not None:
+            # Recorre inorden (izquierda, nodo, derecha)
+            self.sucesoresInorden(nodo.getIzquierda())
+            print(nodo.getValor())  # Imprime el sucesor
+            self.sucesoresInorden(nodo.getDerecha())
