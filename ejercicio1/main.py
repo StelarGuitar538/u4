@@ -1,4 +1,4 @@
-from ejercicio1 import Arbol
+from u4.ejercicio1.TADArbolBinario import Arbol
 from nodo import Nodo
 
 def main():

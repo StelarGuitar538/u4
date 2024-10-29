@@ -1,5 +1,5 @@
 class Nodo:
-    __dato: int
+    __valor: int
     __izquierda: None
     __derecha: None
     
@@ -11,24 +11,24 @@ class Nodo:
     def getValor(self):
         return self.__valor
     
-    def setValor(self, valor):
-        self.__valor = valor
-    
     def getIzquierda(self):
         return self.__izquierda
     
     def getDerecha(self):
         return self.__derecha
     
-    def setIzquierda(self, nodo):
-        self.__izquierda = nodo
+    def setValor(self, valor):
+        self.__valor = valor
         
-    def setDerecha(self, nodo): 
-        self.__derecha = nodo
+    def setIzquierda(self, i):
+        self.__izquierda = i
+        
+    def setDerecha(self, d):
+        self.__derecha = d
         
     def grado(self):
-        if self.__izquierda == None and self.__derecha == None:
-            return 0
+        if self.__derecha == None and self.__izquierda == None:
+            return -1
         elif self.__izquierda == None and self.__derecha != None:
             return 1
         elif self.__derecha == None and self.__izquierda != None:

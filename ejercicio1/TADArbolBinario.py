@@ -1,6 +1,8 @@
 from nodo import Nodo
 
 class Arbol:
+    __raiz: Nodo
+    
     def __init__(self):
         self.__raiz = None
     
@@ -30,9 +32,9 @@ class Arbol:
         elif nodo.getValor() == valor:
             return nodo
         elif valor < nodo.getValor():
-            return self.buscarAux(nodo.getIzquierda(), valor)
+            return self.buscar(nodo.getIzquierda(), valor)
         else:
-            return self.buscarAux(nodo.getDerecha(), valor)
+            return self.buscar(nodo.getDerecha(), valor)
         
         
     def eliminar(self, nodo, valor):
