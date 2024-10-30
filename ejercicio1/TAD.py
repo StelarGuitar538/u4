@@ -9,114 +9,132 @@ class TAD:
     def getRaiz(self):
         return self.__raiz
     
-    def insertar(self, xraiz, nodo):
+    def insertar(self, xraiz, valor):
         if xraiz == None:
-            self.__raiz == nodo
-        
-        if nodo < xraiz.getValor():
-            if xraiz.getIzquierda() == None:
-                xraiz.setIzquierda(nodo)
-            else:
-                self.insertar(xraiz.getIzquierda(), nodo) 
-        elif nodo > xraiz.getValor():
-            if xraiz.getDerecha() == None:
-                xraiz.setDerecha(nodo)
-            else:
-                self.insertar(xraiz.getDerecha(), nodo)
-                
+            self.__raiz = valor
+        else:
+            if valor < xraiz.getValor():
+                if xraiz.getIzquierda() == None:
+                    xraiz.setIzquierda(valor)
+                else:
+                    self.insertar(xraiz.getIzquierda(), valor)
+            elif valor > xraiz.getValor():
+                if xraiz.getDerecha() == None:
+                    xraiz.setDerecha(valor)
+                else:
+                    self.insertar(xraiz.getDerecha(), valor)
+    
     def buscar(self, xraiz, valor):
-        if xraiz == None:
-            return None
-        elif valor == xraiz.getValor():
-            return xraiz
-        elif valor < xraiz.getValor():
-            return self.buscar(xraiz.getIzquierda(), valor)
-        else:
-            return self.buscar(xraiz.getDerecha(), valor)
-        
+        if xraiz != None:
+            if valor == xraiz.getValor():
+                return xraiz
+            elif valor < xraiz.getValor():
+                return self.buscar(xraiz.getIzquierda(), valor)
+            else:
+                return self.buscar(xraiz.getDerecha(), valor)
+            
     def eliminar(self, xraiz, valor):
-        if xraiz == None:
-            return None
-        elif valor < xraiz.getValor():
-            return xraiz.setIzquierda(self.eliminar(xraiz.getIzquierda(), valor))
-        elif valor > xraiz.getValor():
-            return xraiz.setDerecha(self.eliminar(xraiz.getDerecha(), valor))
-        else:
-            #nodo hoja
-            if xraiz.getDerecha() == None and xraiz.getIzquierda() == None:
-                return None
-            #nodo con un hijo
-            if xraiz.getIzquierda() == None:
-                return xraiz.getDerecha()
-            elif xraiz.getDerecha() == None:
-                return xraiz.getIzquierda()
-            sucesor = self.encontrarMin(xraiz.getDerecha())
-            xraiz.setValor(sucesor.getValor())
-            xraiz.setDerecha(self.eliminar(xraiz.getDerecha(), sucesor.getValor()))
-        return xraiz
-    
-    def encontrarMin(self, xraiz):
-        while xraiz.getValor == None:
-            return self.encontrarMin(xraiz.getIzquierda())
-        return xraiz
-    
+        if xraiz != None:
+            if valor < xraiz.getValor():
+                return xraiz.setIzquierda(self.eliminar(xraiz.getIzquierda(), valor))
+            elif valor > xraiz.getValor():
+                return xraiz.setDerecha(self.eliminar(xraiz.getDerecha(), valor))
+            else:
+                if xraiz.getDercha() == None and xraiz.getIzquierda() == None:
+                    return None
+                if xraiz.getDerecha() == None and xraiz.getIzquierda() != None:
+                    return xraiz.getIzquierda()
+                elif xraiz.getDerecha != None and xraiz.getIzquierda() == None:
+                    return xraiz.getDerecha()
+                sucesor = self.min(xraiz.getDerecha())
+                xraiz.setValor(sucesor.getValor())
+                xraiz.setDerecha(self.eliminar(xraiz.getDerecha, sucesor.getValor()))
+                
+                
+    def min(self, xraiz):
+        if xraiz != None:
+            if xraiz.getIzquierda() != None:
+                return self.min(xraiz.getIzquierda())
+            return xraiz
+            
+            
     def nivel(self, xraiz, valor, nivel):
-        if xraiz == None:
-            return None
-        if valor == xraiz.getValor():
-            return nivel
-        elif valor < xraiz.getValor():
-            return nivel(xraiz.getIzquierda(), valor, nivel+1)
+        if xraiz != None:
+            if valor == xraiz.getValor():
+                return nivel
+            elif valor < xraiz.getValor():
+                return self.nivel(xraiz.getIzquierda(), valor, nivel +1)
+            else:
+                return self.nivel(xraiz.getDerecha(), valor, nivel +1)
+            
+    def hoja(self, valor):
+        nodo = self.buscar(self.__raiz, valor)
+        if nodo.getIzquierda() == None and nodo.getDerecha() == None:
+            print(f"el nodo {nodo} es hoja")
         else:
-            return nivel(xraiz.getDerecha(), valor, nivel+1)
-        
+            print(f"el nodo {nodo} no es hoja")
+            
     def hijo(self, padre, hijo):
         padre = self.buscar(self.__raiz, padre)
-        if padre != None: 
-            if padre.getIzquierda() != None and padre.getIzquierda() == hijo:
-                return True
-            elif padre.getDerecha() != None and padre.getDerecha() == hijo:
+        if padre != None:
+            if padre.getDerecha() == hijo or padre.getIzquierda() == hijo:
                 return True
             else:
                 return False
             
     def padre(self, xraiz, padre, hijo):
-        if xraiz == None:
-            return False
-        if xraiz.getValor() == hijo:
-            return padre.getValor() if padre != None else None
-        elif xraiz.getValor() < hijo:
-            return self.padre(xraiz.getDerecha(), xraiz, hijo)
-        else:
-            return self.padre(xraiz.getIzquierda(), xraiz, hijo)
-        
+        if xraiz != None:
+            if xraiz.getValor() == hijo:
+                return padre if padre != None else None
+            elif hijo < xraiz.getValor():
+                return self.padre(xraiz.getIzquierda(), xraiz, hijo)
+            else:
+                return self.padre(xraiz.getDerecha(), xraiz, hijo)
+            
     def camino(self, valor):
         camino = []
-        self.caminoAux(self.__raiz, valor, camino)
+        self.caminoAux(self.__raiz, camino, valor)
         return camino
     
-    def caminoAux(self, xraiz, valor, camino):
-        if xraiz == None:
-            return False
-        camino.append(xraiz.getValor())
-        if valor == xraiz.getValor():
-            return True
-        elif valor < xraiz.getValor():
-            return self.caminoAux(xraiz.getIzquierda(), valor, camino)
-        else:
-            return self.caminoAux(xraiz.getDerecha(), valor, camino)
-        
+    def caminoAux(self, xraiz, camino, valor):
+        if xraiz != None:
+            camino.append(xraiz.getValor())
+            if valor == xraiz.getValor():
+                return True
+            elif valor < xraiz.getValor():
+                return self.caminoAux(xraiz.getIzquierda(), camino, valor)
+            else:
+                return self.caminoAux(xraiz.getDerecha(), camino, valor)
+                
     def altura(self, xraiz):
         if xraiz != None:
-            izquierda=  self.altura(xraiz.getIzquierda())
-            derecha = self.altura(xraiz.getDerecha())
-            if derecha > izquierda:
-                return derecha +1
+            izq = xraiz.getIzquierda()
+            der = xraiz.getDerecha()
+            if der > izq:
+                return der + 1
             else:
-                return izquierda +1
+                return izq +1
             
     def inorder(self, xraiz):
         if xraiz != None:
             self.inorder(xraiz.getIzquierda())
             print(xraiz.getValor())
             self.inorder(xraiz.getDerecha())
+            
+    def contarNodos(self, xraiz):
+        if xraiz != None:
+            return 1 + self.contarNodos(xraiz.getDerecha()) + self.contarNodos(xraiz.getIzquierda())
+        
+    def mostrarSucesores(self, valor):
+        nodo = self.buscar(self.__raiz, valor)
+        if nodo != None:
+            print(f"sucesores de {valor}")
+            return self.inorder(nodo)
+        
+    def mostrarFrontera(self, xraiz):
+        if xraiz != None:
+            self.mostrarFrontera(xraiz.getIzquierda())
+            if xraiz.grado() == 0:
+                print(xraiz.getValor())
+            self.mostrarFrontera(xraiz.getDerecha())
+    

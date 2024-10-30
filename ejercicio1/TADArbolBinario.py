@@ -62,7 +62,7 @@ class Arbol:
     
     def encontrarMin(self, nodo):
         actual = nodo
-        while actual.getIzquierda() == None:
+        while actual.getIzquierda() is not None:
             actual = actual.getIzquierda()
         return actual
     
